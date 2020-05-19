@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SQL 처리(방법 2)를 위한 추가 코드 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 연결할 인터페이스 -->
+<mapper namespace="com.ja.freeboard.mapper.BoardSQLMapper">	
+
+	<select id="createKey" resultType="int">
+	<![CDATA[
+		SELECT FB_Board_seq.nextval
+		FROM DUAL
+	]]>
+	</select>
+
+	<!-- id: 인터페이스 메소드명 -->
+	<insert id="insert">	
+	<![CDATA[
+		INSERT INTO FB_Board
+		VALUES(#{board_no},
+			   #{member_no},
+			   #{board_title},
+			   #{board_content},
+			   0,
+			   SYSDATE
+			   )
+	 ]]>
+	</insert>
+	<!-- 게시글 하나 검색 -->
+	<select id="selectByNo" resultType="com.ja.freeboard.vo.BoardVo">
+	<!-- ![CEATA[]]: 안에 있는 글자들은 무조건 그냥 글자임 - 무조건 넣어주기 -->
+	<![CDATA[	
+		SELECT * FROM FB_Board WHERE board_no=#{no}
+	]]>
+	</select>
+	<!-- 글 전체 -->
+	<select id="selectAll" resultType="com.ja.freeboard.vo.BoardVo">
+	<![CDATA[
+		SELECT *
+		 FROM (
+			SELECT ROWNUM rnum, t1.*
+			FROM(
+		    	SELECT *
+		    	FROM FB_Board
+		        ORDER BY Board_no DESC) t1
+		        ) t2
+		    WHERE t2.rnum >= (#{curr_page}-1)*10+1 AND t2.rnum <= #{curr_page}*10
+	]]>
+	</select>
+	<!-- 게시글 삭제 -->
+	<delete id="deleteByNo">
+	<![CDATA[
+		DELETE FROM FB_Board
+		WHERE board_no=#{no}
+	]]>
+	</delete>
+	<!-- 게시글 수정 -->
+	<update id="update">
+	<![CDATA[
+		UPDATE FB_Board
+		SET board_title=#{board_title}, 
+			board_content=#{board_content}
+		WHERE board_no=#{board_no}
+	]]>
+	</update>
+	<!-- 조회수 -->
+	<update id="updateReadCount">
+	<![CDATA[
+		UPDATE FB_Board
+		SET board_readcount = board_readcount+1
+		WHERE board_no=#{board_no}
+	]]>
+	</update>
+	<!-- 제목 검색 -->
+	<select id="selectByTitle" resultType="com.ja.freeboard.vo.BoardVo">
+	<![CDATA[
+		 SELECT *
+		 FROM (
+			SELECT ROWNUM rnum, t1.*
+			FROM(
+		    	SELECT *
+		    	FROM FB_Board
+		        WHERE board_title LIKE '%' || #{board_title} || '%'
+		        ORDER BY Board_no DESC) t1
+		        ) t2
+		    WHERE t2.rnum >= (#{curr_page}-1)*10+1 AND t2.rnum <= #{curr_page}*10
+	]]>
+	</select>
+	<!-- 전체 글 개수 -->
+	<select id="selectAllCount" resultType="int">
+		<![CDATA[
+			SELECT count(*) FROM FB_Board
+		]]>
+	</select>
+	<!-- 검색 시 글 개수 -->
+	<select id="selectByTitleCount" resultType="int">
+		<![CDATA[
+			SELECT count(*) FROM FB_Board 
+			WHERE board_title LIKE '%' || #{board_title} || '%'
+		]]>
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

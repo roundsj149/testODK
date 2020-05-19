@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ja.freeboard.mapper.AuthSQLMapper">
+
+	<!--  -->
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO FB_Member_Auth
+		VALUES (FB_Member_Auth_seq.nextval, #{member_no}, 'N', #{auth_key })
+	]]>
+	</insert>
+	<update id="update">
+	<![CDATA[
+		UPDATE FB_Member_Auth
+		SET auth_certification = 'Y'
+		WHERE auth_key LIKE #{key }
+	]]>
+	</update>
+	<select id="selectByMemberNo" resultType="com.ja.freeboard.vo.AuthVo">
+	<![CDATA[
+		SELECT *
+		FROM FB_Member_Auth
+		WHERE member_no = #{member_no }
+	]]>
+	</select>
+</mapper>
