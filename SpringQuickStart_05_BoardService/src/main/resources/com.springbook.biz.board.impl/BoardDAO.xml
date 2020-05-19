@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.springbook.biz.board.impl.BoardDAO">
+	<insert id="insert">
+	<![CDATA[
+		INSERT INTO BOARD
+		VALUES(BOARD_SEQ.NEXTVAL, #{TITLE}, #{WRITER}, #{CONTENT}, SYSDATE, 0)	
+	]]>
+	</insert>
+	<update id="update">
+	<![CDATA[
+		UPDATE BOARD
+		SET TITLE=#{TITLE}, CONTENT=#{CONTENT}
+		WHERE SEQ=#{SEQ}
+	]]>
+	</update>
+	<delete id="delete">
+	<![CDATA[
+		DELETE FROM BOARD
+		WHERE SEQ=#{SEQ}
+	]]>
+	</delete>
+	<select id="selectBySeq" resultType="com.springbook.biz.board.BoardVO">
+	<![CDATA[
+		SELECT *
+		FROM BOARD
+		WHERE SEQ=#{SEQ}
+	]]>
+	</select>
+	<select id="select" resultType="com.springbook.biz.board.BoardVO">
+	<![CDATA[
+		SELECT *
+		FROM BOARD
+		ORDER BY SEQ DESC
+	]]>
+	</select>
+</mapper>

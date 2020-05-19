@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="stv" class="com.springbook.study.SamsungTv" init-method="initMethod" destroy-method="destroyMethod">
+		<!-- 스프링 컨테이너는 기본적으로 먼저 빈 등록된 순서대로 객체를 생성하며, 모든 객체는 기본 생성자 호출은 원칙으로 하지만,
+			 생성자 인젝션으로 의존성 주입될 SonySpeaker가 먼저 객체 생성되고, SonySpeaker 객체를 매개변수로 받는 생성자를 호출하여 객체를 생성하므로
+			 SamsungTv가 SonySpeaker 객체를 참조하여 문제없이 메소드를 처리할 수 있게 된다.
+		-->
+		<!-- 생성자 인젝션 설정 -->
+		<!-- 인자로 전달될 데이터가 빈으로 등록된 다른 객체이므로 ref를 이용하여 해당 객체의 아이디를 참조 -->
+		<!-- <constructor-arg index="0" ref="sony"></constructor-arg>  -->
+		<!-- 기본형 데이터이므로 ref 필요없음 -->
+		<constructor-arg index="1" value="2000000"></constructor-arg>
+		<constructor-arg index="2" value="500000"></constructor-arg>
+		<constructor-arg ref="apple"></constructor-arg>
+	</bean>
+	<bean id="ltv" class="com.springbook.study.LgTv"></bean>
+	<bean id="sony" class="com.springbook.study.SonySpeaker"></bean>
+	<bean id="apple" class="com.springbook.study.AppleSpeaker"></bean>
+	
+</beans>
